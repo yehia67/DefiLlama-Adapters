@@ -129,6 +129,56 @@ const RECEIPT_TOKENS = {
       fundName:'Libre SAF VCC - Laser Digital Carry Fund B'
     },
   },
+  xdc: {
+    UMA: {
+      address: '0xcf2Ca1B21e6f5dA7A2744f89667dE4E450791C79',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
+      fundName:'USD I Money Market a sub-fund of Libre SAF VCC'
+    },
+    BHMA: {
+      address: '0xcc777c52ee9Ee5A57965a8E56F06211Fad34Fb3B',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId: "0x3636313431343633306633613839373337393633303932630000000000000000",
+      fundName: ' BH Master Fund Access a sub-fund of Libre SAF VCC'
+    },
+    HLSPC: {
+      address: '0xe5631cCF95350948Ba2D4d8c815c05AFBfb47A9F',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId:"0x3636633433643637363564313665353638356639333338340000000000000000",
+      fundName: 'Libre SAF VCC - HL Scope Private Credit Access A'
+    },
+    APCA: {
+      address: '0x1b62F1B8b04736e8F9ECc8eEaE8B7D5957c74d5d',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId:"0x3636653765336666346534363764313238323964396366340000000000000000",
+      fundName:'Libre SAF VCC - Access Private Credit Feeder'
+    },
+    LDCFA: {
+      address: '0xC1Cd4CCd9E74be61EDdd5C06f962657Bd5D57aF3',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
+      fundName:'Libre SAF VCC - Laser Digital Carry Fund A'
+    },
+    LDCFB: {
+      address: '0xbee4274F1c5EE0B30fC5AAa7842A434C35BF6f7b',
+      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
+      fundName:'Libre SAF VCC - Laser Digital Carry Fund B'
+    },
+  },
   injective: {
     UMA: {
       address: 'inj1eh6h6vllrvtl6qyq77cv5uwy0hw6e6d8jy4pxy',
@@ -385,7 +435,7 @@ const RECEIPT_TOKENS = {
   },
   cardano: {
     UMA: {
-      address: '',
+      address: '', // just a placeholder until we get the address
       decimals: 8,
       underlying: 'security-token',
       instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
@@ -768,8 +818,35 @@ async function cardanoTvl() {
   return balances;
 }
 
+async function xdcTvl() {
+  const balances = {};
+  let totalTvl = 0;
+  const fundPrices = await getFundPrices();
+  
+  // Use direct ABI calls to get totalSupply for each token
+  for (const token of Object.values(RECEIPT_TOKENS.xdc)) {
+    // Use the standard erc20:totalSupply format with the token address
+    const supply = await sdk.api.abi.call({
+      target: token.address,
+      abi: 'erc20:totalSupply',
+      chain: 'xdc',
+      rpcUrl: 'https://rpc.xinfin.network'
+    })
+    
+    if (supply?.output) {
+      const price = fundPrices[token.instrumentId] || 1;
+      const adjustedBalance = Number(supply.output) / (10 ** token.decimals);
+      const valueUSD = adjustedBalance * price;
+      totalTvl += valueUSD;
+    }
+  }
+  
+  balances['usd-coin'] = totalTvl;
+  return balances;
+}
+
 module.exports = {
-  methodology: "TVL represents the total value of institutional funds including 'USD I Money Market', 'BH Master Fund Access', 'Laser Carry', 'Hamilton Lane' and 'Access Private Credit Feeder' sub-funds of Libre SAF VCC. These funds are accessible through receipt tokens deployed across multiple blockchains including Ethereum, Polygon, Aptos, Solana, Near, Sui, Injective, Mantra, Immutable X, Hedera, Cardano and Avalanche. The value is calculated by multiplying the total supply of receipt tokens by their respective NAV prices, denominated in their underlying stablecoin value",
+  methodology: "TVL represents the total value of institutional funds including 'USD I Money Market', 'BH Master Fund Access', 'Laser Carry', 'Hamilton Lane' and 'Access Private Credit Feeder' sub-funds of Libre SAF VCC. These funds are accessible through receipt tokens deployed across multiple blockchains including Ethereum, Polygon, Aptos, Solana, Near, Sui, Injective, Mantra, Immutable X, Hedera, Cardano, Avalanche and XDC. The value is calculated by multiplying the total supply of receipt tokens by their respective NAV prices, denominated in their underlying stablecoin value",
   ethereum: { tvl: ethTvl },
   polygon: { tvl: polygonTvl },
   injective: { tvl: injectiveTvl },
@@ -781,5 +858,6 @@ module.exports = {
   avax: { tvl: avaxTvl },
   aptos: { tvl: aptosTvl },
   hedera: { tvl: hederaTvl },
-  cardano: { tvl: cardanoTvl }
+  cardano: { tvl: cardanoTvl },
+  xdc: { tvl: xdcTvl }
 }
