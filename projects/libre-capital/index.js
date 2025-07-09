@@ -132,7 +132,6 @@ const RECEIPT_TOKENS = {
   xdc: {
     UMA: {
       address: '0xcf2Ca1B21e6f5dA7A2744f89667dE4E450791C79',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
@@ -140,7 +139,6 @@ const RECEIPT_TOKENS = {
     },
     BHMA: {
       address: '0xcc777c52ee9Ee5A57965a8E56F06211Fad34Fb3B',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId: "0x3636313431343633306633613839373337393633303932630000000000000000",
@@ -148,7 +146,6 @@ const RECEIPT_TOKENS = {
     },
     HLSPC: {
       address: '0xe5631cCF95350948Ba2D4d8c815c05AFBfb47A9F',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId:"0x3636633433643637363564313665353638356639333338340000000000000000",
@@ -156,7 +153,6 @@ const RECEIPT_TOKENS = {
     },
     APCA: {
       address: '0x1b62F1B8b04736e8F9ECc8eEaE8B7D5957c74d5d',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId:"0x3636653765336666346534363764313238323964396366340000000000000000",
@@ -164,7 +160,6 @@ const RECEIPT_TOKENS = {
     },
     LDCFA: {
       address: '0xC1Cd4CCd9E74be61EDdd5C06f962657Bd5D57aF3',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
@@ -172,7 +167,6 @@ const RECEIPT_TOKENS = {
     },
     LDCFB: {
       address: '0xbee4274F1c5EE0B30fC5AAa7842A434C35BF6f7b',
-      owner:"0x55413C13DcE4b03Dee20EC1dD8351691F0C50Bdd",
       decimals: 18,
       underlying: 'security-token',
       instrumentId: "0x3636313431343936306633613839373337393633303932640000000000000000",
