@@ -8,17 +8,7 @@ const { getHederaTokenSupply } = require("../helper/chain/hedera/hederaTokenSupp
 const { getTokensMinted } = require("../helper/chain/cardano/blockfrost");
 
 const NAV_CONTRACT = "0x0f29d042bb26a200b2a507b752e51dbbc05bf2f6";
-const NAV_ABI = {
-  "inputs": [{"internalType": "bytes32","name": "_instrumentId","type": "bytes32"}],
-  "name": "getLatestNAV",
-  "outputs": [
-    {"internalType": "uint256","name": "navPerShare","type": "uint256"},
-    {"internalType": "string","name": "legalDocumentCID","type": "string"},
-    {"internalType": "uint256","name": "timestamp","type": "uint256"}
-  ],
-  "stateMutability": "view",
-  "type": "function"
-};
+const NAV_ABI = "function getLatestNAV(bytes32 _instrumentId) view returns (uint256 navPerShare, string legalDocumentCID, uint256 timestamp)"
 
 const RECEIPT_TOKENS = {
   ethereum: {
@@ -109,6 +99,13 @@ const RECEIPT_TOKENS = {
       underlying: 'security-token',
       instrumentId: "0x3636313431343633306633613839373337393633303932630000000000000000",
       fundName: ' BH Master Fund Access a sub-fund of Libre SAF VCC'
+    },
+    HLSPC: {
+      address: '0xe5631cCF95350948Ba2D4d8c815c05AFBfb47A9F',
+      decimals: 18,
+      underlying: 'security-token',
+      instrumentId:"0x3636633433643637363564313665353638356639333338340000000000000000",
+      fundName: 'Libre SAF VCC - HL Scope Private Credit Access A'
     },
     APCA: {
       address: '0x1b62F1B8b04736e8F9ECc8eEaE8B7D5957c74d5d',
